@@ -27,10 +27,10 @@ def home(request):
 @require_POST
 def add_weather(request):
     city_name = request.POST.get("city")
-    
+
     city_name = city_name.strip().title()
-    if city_name == '':
-        messages.error(request,"City name is empty")
+    if city_name == "":
+        messages.error(request, "City name is empty")
         return redirect("weather:home")
     data_db = get_city_weather_from_db(city_name)
 
@@ -57,9 +57,9 @@ def add_weather(request):
             )
             return redirect("weather:home")
     else:
-        print('weather data loaded from db')
+        print("weather data loaded from db")
     return render(request, "index.html", data_db)
 
 
 def display_weather(request, data):
-    return HttpResponseRedirect(reverse('weather:home'), data=data)
+    return HttpResponseRedirect(reverse("weather:home"), data=data)
