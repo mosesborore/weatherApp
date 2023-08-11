@@ -24,9 +24,7 @@ def get_list(text):
 ALLOWED_HOSTS = get_list(os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,*"))
 
 
-OPENWEATHER_API_KEY = os.environ.get(
-    "OPENWEATHER_API_KEY"
-)
+OPENWEATHER_API_KEY = os.environ.get("OPENWEATHER_API_KEY")
 if not OPENWEATHER_API_KEY:
     warnings.warn("OPENWEATHER_API_KEY keys is not set. Exiting")
     sys.exit(0)
@@ -83,13 +81,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "weatherApp.wsgi.application"
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "postgres",
+        "USER": "u0_a207",
+        "PASSWORD": "1234",
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

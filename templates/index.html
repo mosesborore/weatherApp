@@ -18,7 +18,7 @@ Weather: ALL
             <form action="{% url "weather:add-weather-data" %}" method="post">
                 {% csrf_token %}
                 <div class="form-group mb-2 mx-100">
-                    <input type="text" class="form-control" name="city" placeholder="Enter the town name">
+                    <input type="text" class="form-control" required="true" name="city" placeholder="Enter the town name">
                 </div>
                 <input type="submit" role="button" class="btn btn-primary" value="submit">
             </form>
