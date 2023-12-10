@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # local apps
     "weather",
+    
+    "django_htmx"
 ]
 
 MIDDLEWARE = [
@@ -52,6 +54,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_htmx.middleware.HtmxMiddleware"
 ]
 
 ROOT_URLCONF = "weatherApp.urls"
@@ -73,6 +76,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.static",
+                "weather.util.context_processors.process_random"
             ],
             "loaders": loaders,
         },
@@ -91,9 +95,9 @@ WSGI_APPLICATION = "weatherApp.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "postgres",
+        "NAME": "weather",
         "USER": "u0_a207",
-        "PASSWORD": "1234",
+        "PASSWORD": "",
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }
@@ -129,7 +133,7 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATICFILES_DIRS = (str(BASE_DIR.joinpath("static")),)
 STATIC_ROOT = str(BASE_DIR.joinpath("staticfiles"))
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+#STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",

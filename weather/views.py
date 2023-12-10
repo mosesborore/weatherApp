@@ -2,14 +2,15 @@ from django.contrib import messages
 from django.forms.models import model_to_dict
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 
+from render_block import render_block_to_string
 from .models import City, Weather
 from .util import utils
 
 
-def get_city_weather_from_db(city_name):
+def get_city_weather_from_db(city_name: str):
     """fetch data from db"""
     try:
         weather = Weather.objects.get(city__name=city_name)
@@ -32,9 +33,10 @@ def add_weather(request):
     if city_name == "":
         messages.error(request, "City name is empty")
         return redirect("weather:home")
-    data_db = get_city_weather_from_db(city_name)
-
-    if data_db is None:
+    context_db = get_city_weather_from_db(city_name)
+    
+    context_api = {}
+    if context_db is None:
         # call the api
         print("calling the API")
         data_api = utils.get_city_weather(city_name)
@@ -49,16 +51,18 @@ def add_weather(request):
 
             city.save()
             weather.save()
-            return render(request, "index.html", {**city_json, **weather_json})
+            context_api =  {**city_json, **weather_json}
         else:
-            messages.error(
-                request,
-                "Unable to reach Weather data provider. Ensure you have internet connection or there's issues on our side",
+            return HttpResponse(
+                """<h4 style="color: red;">Unable to reach Weather data provider. Ensure you have internet connection.</h4>"""
             )
-            return redirect("weather:home")
     else:
         print("weather data loaded from db")
-    return render(request, "index.html", data_db)
+    
+    context = context_db or context_api
+    html = render_block_to_string("index.html", 'weather', context)
+    return HttpResponse(html)
+    # return render(request, "index.html", data_db)
 
 
 def display_weather(request, data):

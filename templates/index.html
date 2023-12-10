@@ -8,14 +8,15 @@ Weather: ALL
 
 {% block main %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Weather Information for {{name}}</h1>
+    <h1 class="h2">Weather Information for {{name}} </h1>
+    <small>{{randomName}}</small>
 </div>
 
 
 <div class="p-5 mb-4 bg-light rounded-3">
     <div class="container-fluid py-2">
         <div class="d-flex justify-content-even ">
-            <form action="{% url "weather:add-weather-data" %}" method="post">
+            <form hx-post="{% url "weather:add-weather-data" %}" hx-target='#weather-info'>
                 {% csrf_token %}
                 <div class="form-group mb-2 mx-100">
                     <input type="text" class="form-control" required="true" name="city" placeholder="Enter the town name">
@@ -26,7 +27,8 @@ Weather: ALL
     </div>
 </div>
 
-<div class="row container-fluid mb-100">
+{% block weather %}
+<div class="row container-fluid mb-100" id="weather-info">
     <div class="col ">
         <div class="card mb-6">
             <div class="card-body">
@@ -116,4 +118,5 @@ Weather: ALL
         </div>
     </div>
 </div>
+{% endblock weather%}
 {% endblock main %}
